@@ -171,6 +171,15 @@ table.tt td.c .hv{display:block;font-size:10px;font-weight:800;color:var(--pink)
 .sheet .btn.ghost{background:var(--bg);color:var(--ink)}
 .sheet .btn:disabled{opacity:.5}
 .sheet .msg{font-size:13px;color:var(--sub);min-height:18px}
+.kind{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--bg);border-radius:14px;padding:4px}
+.kind button{border-radius:11px;padding:10px 4px;font-weight:700;font-size:14px;color:var(--sub);line-height:1.3}
+.kind button small{display:block;font-size:11px;font-weight:600;color:var(--faint)}
+.kind button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.ktag{display:inline-block;font-size:11px;font-weight:800;border-radius:6px;padding:1px 6px;margin-right:6px;vertical-align:1px}
+.ktag.su{background:#fde8f3;color:#b02a74}
+.ktag.due{background:#e6efff;color:#2f5bd8}
+table.tt td.c.hasdue{background:#e6efff;color:#2f5bd8}
+table.tt td.c .hv.due{color:var(--blue)}
 
 /* tiles */
 .tile{display:flex;align-items:center;gap:14px;padding:16px 18px;text-decoration:none;color:var(--ink)}
@@ -216,7 +225,7 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
   <main class="view" id="v-tt" hidden>
     <div id="heroTT"></div>
     <div class="card seg" id="picker"></div>
-    <div class="sec-title">다가오는 수행평가</div>
+    <div class="sec-title">다가오는 수행평가·과제</div>
     <div class="card tasks" id="tasks"></div>
     <div class="sec-title" id="todayTitle">오늘</div>
     <div class="card periods" id="periods"></div>
@@ -462,7 +471,9 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
       const row = el("div","p" + (st != null && now >= st && now < st + PERIOD_MIN ? " cur" : st != null && now >= st + PERIOD_MIN ? " done" : ""));
       const no = el("div","no num", `${i+1}`); if (times[i]) no.append(el("small",null,times[i]));
       const sj = el("div","s", s); if (chg[i]) sj.append(el("span","tag","변경"));
-      const n = tasksAt(day, i+1).length; if (n) sj.append(el("span","badge", n > 1 ? `수행 ${n}` : "수행"));
+      const here = tasksAt(day, i+1), nS = here.filter(t => t.kind !== "과제").length, nD = here.length - nS;
+      if (nS) sj.append(el("span","badge", nS > 1 ? `수행 ${nS}` : "수행"));
+      if (nD) { const b = el("span","badge", nD > 1 ? `과제 ${nD}` : "과제"); b.style.background = "var(--blue)"; sj.append(b); }
       row.append(no, sj, el("div","tch", teach[i] || ""));
       row.onclick = () => openSheet(day, i+1, s, teach[i] || "");
       box.append(row);
@@ -491,9 +502,9 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
       for (let d=1; d<=5; d++){
         const v = (days[d]||[])[p] || "";
         const date = wk.weekStart ? addDays(wk.weekStart, d-1) : null;
-        const has = date ? tasksAt(date, p+1).length : 0;
-        const td = el("td","c" + (isThis && d === wd(TODAY) ? " today" : "") + (v ? "" : " blank") + ((chg[d]||[])[p] ? " chg" : "") + (has ? " has" : ""), v || "·");
-        if (has) td.append(el("span","hv", has > 1 ? `수행 ${has}` : "수행"));
+        const here = date ? tasksAt(date, p+1) : [], hasS = here.filter(t => t.kind !== "과제").length, hasD = here.length - hasS, has = here.length;
+        const td = el("td","c" + (isThis && d === wd(TODAY) ? " today" : "") + (v ? "" : " blank") + ((chg[d]||[])[p] ? " chg" : "") + (hasS ? " has" : hasD ? " hasdue" : ""), v || "·");
+        if (has) td.append(el("span","hv" + (hasS ? "" : " due"), hasS && hasD ? "수행·과제" : hasS ? (hasS > 1 ? `수행 ${hasS}` : "수행") : (hasD > 1 ? `과제 ${hasD}` : "과제")));
         else if (v && (teach[d]||[])[p]) td.append(el("span","tc",teach[d][p]));
         if (date && v) td.onclick = () => openSheet(date, p+1, v, (teach[d]||[])[p] || "");
         tr.append(td);
@@ -514,9 +525,9 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
     if (!sbReady()){ state.tasks = []; renderTasks(); return; }
     try {
       const from = isoDate(addDays(monday, -7));
-      const rows = await sb(`/rest/v1/assessments?select=id,class,date,period,subject,title,note,created_at&class=eq.${encodeURIComponent(cls)}&date=gte.${from}&order=date.asc,period.asc&limit=500`);
+      const rows = await sb(`/rest/v1/assessments?select=id,class,date,period,subject,title,note,kind,created_at&class=eq.${encodeURIComponent(cls)}&date=gte.${from}&order=date.asc,period.asc&limit=500`);
       if (state.myClass !== cls) return;
-      state.tasks = rows.map(r => ({ ...r, date: r.date.replaceAll("-","") }));
+      state.tasks = rows.map(r => ({ ...r, kind: r.kind || "수행", date: r.date.replaceAll("-","") }));
     } catch { state.tasks = []; state.taskErr = true; }
     renderTasks(); renderPeriods(); renderGrid();
   }
@@ -524,11 +535,13 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
     const box = $("tasks"); box.textContent = "";
     if (!sbReady()) return box.append(el("div","none","수행평가 저장소가 아직 연결되지 않았어요."));
     const up = state.tasks.filter(t => t.date >= TODAY).slice(0, 8);
-    if (!up.length) return box.append(el("div","none","등록된 수행평가가 없어요. 시간표에서 교시를 눌러 추가해보세요."));
+    if (!up.length) return box.append(el("div","none","등록된 수행평가·과제가 없어요. 시간표에서 교시를 눌러 추가해보세요."));
     up.forEach(t => {
       const n = dday(t.date), row = el("div","row");
       row.append(el("div","dd num" + (n > 7 ? " far" : ""), n === 0 ? "오늘" : `D-${n}`));
-      const mid = el("div"); mid.append(el("div","tt1", t.title), el("div","tt2", `${md(t.date)} ${WD[wd(t.date)]} · ${t.period}교시 ${t.subject || ""}`));
+      const due = t.kind === "과제";
+      const t1 = el("div","tt1"); t1.append(el("span","ktag " + (due ? "due" : "su"), due ? "과제" : "수행"), document.createTextNode(t.title));
+      const mid = el("div"); mid.append(t1, el("div","tt2", due ? `${md(t.date)} ${WD[wd(t.date)]} ${t.period}교시 ${t.subject || ""} 전까지` : `${md(t.date)} ${WD[wd(t.date)]} · ${t.period}교시 ${t.subject || ""}`));
       row.append(mid, el("span","arr","›"));
       row.onclick = () => openSheet(t.date, t.period, t.subject, "");
       box.append(row);
@@ -548,9 +561,10 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
     sh.append(el("div","sh-t", subject + (teacher ? ` (${teacher})` : "")));
     const list = el("div"); sh.append(list);
     const items = tasksAt(date, period);
-    if (!items.length) list.append(el("p","empty","이 수업에 등록된 수행평가가 없어요."));
+    if (!items.length) list.append(el("p","empty","이 수업에 등록된 수행평가나 과제가 없어요."));
     items.forEach(t => {
-      const it = el("div","item"); it.append(el("b",null,t.title));
+      const it = el("div","item"), tb = el("b"), due = t.kind === "과제";
+      tb.append(el("span","ktag " + (due ? "due" : "su"), due ? "과제 · 이 수업 전까지" : "수행평가"), document.createTextNode(t.title)); it.append(tb);
       if (t.note) it.append(el("p",null,t.note));
       const meta = el("div","meta"); meta.append(el("span",null, "올린 날 " + new Date(t.created_at).toLocaleDateString("ko-KR",{month:"numeric",day:"numeric"})));
       if (mine.has(t.id)){
@@ -570,23 +584,30 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
     if (!sbReady()){ sh.append(el("p","empty","수행평가 저장소가 아직 연결되지 않아서 추가할 수 없어요.")); }
     else {
       const f = el("form"); f.noValidate = true;
-      const ti = el("input"); ti.id = "tkTitle"; ti.maxLength = 60; ti.placeholder = "수행평가 이름 (예: 탐구 보고서 제출)"; ti.autocomplete = "off";
+      let kind = "수행";
+      const kd = el("div","kind");
+      const kb1 = el("button"); kb1.type = "button"; kb1.append("수행평가", el("small",null,"이 수업 시간에 해요"));
+      const kb2 = el("button"); kb2.type = "button"; kb2.append("과제", el("small",null,"이 수업 전까지 해와요"));
+      const ti = el("input"); ti.id = "tkTitle"; ti.maxLength = 60; ti.autocomplete = "off";
+      const setKind = k => { kind = k; kb1.setAttribute("aria-pressed", String(k === "수행")); kb2.setAttribute("aria-pressed", String(k === "과제"));
+        ti.placeholder = k === "수행" ? "수행평가 이름 (예: 실험 보고서 작성)" : "과제 이름 (예: 탐구 보고서 제출)"; };
+      kb1.onclick = () => setKind("수행"); kb2.onclick = () => setKind("과제"); kd.append(kb1, kb2); setKind("수행");
       const no = el("textarea"); no.id = "tkNote"; no.rows = 2; no.maxLength = 300; no.placeholder = "메모 (준비물, 범위 등 · 선택)";
       const msg = el("div","msg");
       const btns = el("div","btns"), cancel = el("button","btn ghost","닫기"), add = el("button","btn","추가");
       cancel.type = "button"; cancel.onclick = closeSheet; add.type = "submit";
-      btns.append(cancel, add); f.append(ti, no, msg, btns); sh.append(f);
+      btns.append(cancel, add); f.append(kd, ti, no, msg, btns); sh.append(f);
       f.addEventListener("submit", async e => {
         e.preventDefault();
         const title = ti.value.trim(), note = no.value.trim();
-        if (!title){ msg.textContent = "수행평가 이름을 적어주세요."; ti.focus(); return; }
+        if (!title){ msg.textContent = (kind === "과제" ? "과제" : "수행평가") + " 이름을 적어주세요."; ti.focus(); return; }
         add.disabled = true; msg.textContent = "저장 중…";
         const id = uuid();
         try {
           await sb("/rest/v1/assessments", { method:"POST", headers:{ Prefer:"return=minimal" },
-            body: JSON.stringify({ id, class: state.myClass, date: isoDate(date), period, subject, title, note, token: myToken }) });
+            body: JSON.stringify({ id, class: state.myClass, date: isoDate(date), period, subject, title, note, kind, token: myToken }) });
           mine.add(id); store.set("shMine", [...mine]);
-          state.tasks.push({ id, class: state.myClass, date, period, subject, title, note, created_at: new Date().toISOString() });
+          state.tasks.push({ id, class: state.myClass, date, period, subject, title, note, kind, created_at: new Date().toISOString() });
           state.tasks.sort((a,b) => (a.date+a.period).localeCompare(b.date+b.period));
           renderTasks(); renderPeriods(); renderGrid(); openSheet(date, period, subject, teacher);
         } catch { msg.textContent = "저장하지 못했어요. 잠시 후 다시 해주세요."; add.disabled = false; }
