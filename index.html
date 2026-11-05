@@ -19,11 +19,11 @@
   --bg:#f4f5f8; --card:#ffffff; --ink:#191b23; --sub:#6b7080; --faint:#a3a8b5; --line:#eceef3;
   --blue:#3b6cf6; --violet:#7b4df2; --pink:#e14fa0; --orange:#f08a2c; --yellow:#f5bf36;
   --marker:#fff2a8; --chip:#eef1fb;
-  --g-hero:linear-gradient(120deg,#6a5cf6 0%,#9b4ff0 55%,#e0559e 100%);
-  --g-blue:linear-gradient(120deg,#46a0f2 0%,#4a63ef 60%,#5a3fe8 100%);
-  --g-sun:linear-gradient(135deg,#f7c548,#f0892c);
-  --g-noon:linear-gradient(135deg,#4fb2f4,#4a67ef);
-  --g-night:linear-gradient(135deg,#8a63f4,#d153a8);
+  --g-hero:#6c5cf2;
+  --g-blue:#3f68ee;
+  --g-sun:#f39a2e;
+  --g-noon:#3f8ef2;
+  --g-night:#8a5cf0;
   --f:Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
   --r:22px; --shadow:0 1px 2px rgba(20,24,40,.04),0 6px 20px rgba(20,24,40,.06);
   --tab-h:64px; color-scheme:light;
@@ -48,20 +48,20 @@ header.top .sub{color:var(--sub);font-size:14px;margin-top:2px}
 .sec-title{font-size:13px;font-weight:700;color:var(--sub);padding:6px 6px 0}
 
 /* hero gradient card */
-.hero{border-radius:var(--r);color:#fff;padding:22px 22px 20px;display:grid;grid-template-columns:56px 1fr;gap:16px;align-items:start;box-shadow:0 10px 24px rgba(108,76,240,.22)}
+.hero{border-radius:var(--r);color:#fff;padding:22px;display:grid;grid-template-columns:56px 1fr;gap:16px;align-items:start}
 .hero.meal{background:var(--g-hero)}
-.hero.tt{background:var(--g-blue);box-shadow:0 10px 24px rgba(74,99,239,.22)}
+.hero.tt{background:var(--g-blue)}
 .hero .ico{width:56px;height:56px;border-radius:18px;background:rgba(255,255,255,.2);display:grid;place-items:center}
 .hero .ico svg{width:28px;height:28px}
 .hero .k{font-size:13px;opacity:.85;font-weight:600}
 .hero .big{font-size:24px;font-weight:800;letter-spacing:-.03em;line-height:1.3;margin-top:2px;word-break:keep-all}
-.hero .rest{font-size:14px;opacity:.85;margin-top:6px;word-break:keep-all}
+.hero .rest{font-size:15px;opacity:.9;margin-top:6px;word-break:keep-all}
 .hero .foot{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.25);font-size:14px;font-weight:700}
 .pill{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:700}
 .hero .pill{background:rgba(255,255,255,.22);color:#fff}
 
 /* banner */
-.banner{border-radius:var(--r);background:var(--g-sun);color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;box-shadow:0 8px 20px rgba(240,138,44,.2)}
+.banner{border-radius:var(--r);background:var(--g-sun);color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px}
 .banner .t{font-weight:800;font-size:17px;letter-spacing:-.02em}
 .banner .s{font-size:13px;opacity:.9}
 .banner .dd{font-size:22px;font-weight:800;white-space:nowrap}
@@ -69,9 +69,9 @@ header.top .sub{color:var(--sub);font-size:14px;margin-top:2px}
 /* date chips */
 .dates{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 4px;scrollbar-width:none}
 .dates::-webkit-scrollbar{display:none}
-.dates button{flex:none;width:54px;padding:9px 0 8px;border-radius:16px;background:var(--card);box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;line-height:1.25}
+.dates button{flex:none;min-width:64px;padding:12px 14px;border-radius:16px;background:var(--card);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;line-height:1.2}
 .dates .w{font-size:12px;color:var(--faint);font-weight:600}
-.dates .n{font-size:18px;font-weight:800}
+.dates .n{font-size:16px;font-weight:800;white-space:nowrap}
 .dates button.past .n{color:var(--faint)}
 .dates button.gap{margin-left:10px}
 .dates button[aria-pressed="true"]{background:var(--ink);color:#fff}
@@ -84,7 +84,7 @@ header.top .sub{color:var(--sub);font-size:14px;margin-top:2px}
 .meal-h .ico svg{width:22px;height:22px}
 .meal-h .name{font-size:18px;font-weight:800;letter-spacing:-.02em}
 .meal-h .time{font-size:13px;color:var(--faint);font-weight:600}
-.meal-h .pill{margin-left:auto;background:var(--chip);color:var(--blue)}
+.meal-h .kc{margin-left:auto;font-size:15px;font-weight:700;color:var(--sub)}
 .meal.now{outline:2px solid var(--ink);outline-offset:-2px}
 .mains{display:flex;flex-direction:column;gap:6px}
 .mains .m{font-size:18px;font-weight:800;letter-spacing:-.02em;line-height:1.4;word-break:keep-all}
@@ -105,12 +105,16 @@ header.top .sub{color:var(--sub);font-size:14px;margin-top:2px}
 
 /* today list */
 .periods{padding:6px 8px}
-.periods .p{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;padding:11px 12px;border-radius:16px}
+.periods .p{display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:center;padding:13px 12px;border-radius:16px}
 .periods .p + .p{margin-top:2px}
 .periods .no{font-weight:800;font-size:15px;color:var(--faint)}
 .periods .no small{display:block;font-size:11px;font-weight:600}
 .periods .s{font-weight:700;font-size:16px}
-.periods .tch{font-size:13px;color:var(--faint)}
+.periods .tch{font-size:15px;color:var(--faint);font-weight:600}
+.mark{font-weight:700}
+.mark.su{color:var(--pink)}
+.mark.chg{color:var(--orange)}
+.mark.due{color:var(--blue)}
 .periods .p.cur{background:var(--chip)}
 .periods .p.cur .no{color:var(--blue)}
 .periods .p.done .s{color:var(--faint)}
@@ -129,7 +133,7 @@ table.tt th.today{color:var(--blue)}
 table.tt th.pc,table.tt td.pc{width:30px}
 table.tt td.pc{font-size:12px;font-weight:800;color:var(--faint);text-align:center;line-height:1.2}
 table.tt td.pc small{display:block;font-size:9px;font-weight:600}
-table.tt td.c{background:var(--bg);border-radius:12px;height:56px;text-align:center;vertical-align:middle;font-size:13px;font-weight:700;padding:4px 2px;word-break:keep-all;line-height:1.25}
+table.tt td.c{background:var(--bg);border-radius:12px;height:50px;text-align:center;vertical-align:middle;font-size:13px;font-weight:700;padding:4px 2px;word-break:keep-all;line-height:1.25}
 table.tt td.c.today{background:var(--chip);color:var(--blue)}
 table.tt td.c.blank{color:var(--faint);font-weight:400}
 table.tt td.c .tc{display:block;font-size:10px;font-weight:600;color:var(--faint);margin-top:2px}
@@ -172,7 +176,7 @@ table.tt td.c .hv{display:block;font-size:10px;font-weight:800;color:var(--pink)
 .sheet .btn:disabled{opacity:.5}
 .sheet .msg{font-size:13px;color:var(--sub);min-height:18px}
 .kind{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--bg);border-radius:14px;padding:4px}
-.kind button{border-radius:11px;padding:10px 4px;font-weight:700;font-size:14px;color:var(--sub);line-height:1.3}
+.kind button{border-radius:11px;padding:13px 4px;font-weight:700;font-size:15px;color:var(--sub);line-height:1.3}
 .kind button small{display:block;font-size:11px;font-weight:600;color:var(--faint)}
 .kind button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .ktag{display:inline-block;font-size:11px;font-weight:800;border-radius:6px;padding:1px 6px;margin-right:6px;vertical-align:1px}
@@ -193,12 +197,15 @@ table.tt td.c .hv{display:block;font-size:10px;font-weight:800;color:var(--pink)
 .tile .arr{margin-left:auto;color:var(--faint)}
 
 /* 내 계획 */
-.hero.plan{background:linear-gradient(120deg,#f7b733 0%,#f08a2c 55%,#ec5f6b 100%);box-shadow:0 10px 24px rgba(240,138,44,.22)}
+.hero.plan{background:#f0892c}
 .pdates{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 4px;scrollbar-width:none}
 .pdates::-webkit-scrollbar{display:none}
-.pdates button{flex:none;width:50px;padding:9px 0 8px;border-radius:16px;background:var(--card);box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;line-height:1.25;position:relative}
+.pdates button{flex:none;min-width:64px;padding:12px 14px;border-radius:16px;background:var(--card);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;line-height:1.2;position:relative}
 .pdates .w{font-size:12px;color:var(--faint);font-weight:600}
-.pdates .n{font-size:18px;font-weight:800}
+.pdates .n{font-size:16px;font-weight:800;white-space:nowrap}
+.pdates .n.sun{color:#e5534b}
+.pdates .n.sat{color:var(--blue)}
+.pdates button[aria-pressed="true"] .n{color:#fff}
 .pdates .w.sun{color:#e5534b}
 .pdates .w.sat{color:var(--blue)}
 .pdates button .dot{position:absolute;bottom:4px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--orange)}
@@ -233,13 +240,81 @@ nav.tabs{position:fixed;left:0;right:0;bottom:env(safe-area-inset-bottom,0px);he
 nav.tabs a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;color:var(--faint);font-size:12px;font-weight:700}
 nav.tabs a svg{width:24px;height:24px}
 nav.tabs a[aria-current="page"]{color:var(--ink)}
+
+/* ---- 사람 냄새 나게: 한 가지 포인트 색, 흰 카드, 색 블록·아이콘 상자·작은 머리말 없음 ---- */
+:root{ --accent:#f0641e; --accent-soft:#fff1e8; --bg:#f2f3f5; --line:#e7e8ec; }
+.card,.hero,.banner{box-shadow:none;border:1px solid var(--line)}
+.hero,.hero.meal,.hero.tt,.hero.plan{background:var(--card);color:var(--ink);grid-template-columns:1fr;gap:0;padding:20px}
+.hero .ico{display:none}
+.hero .k{font-size:16px;font-weight:800;opacity:1;color:var(--ink);letter-spacing:-.02em}
+.hero .big{font-size:23px;margin-top:8px}
+.hero .rest{color:var(--sub);opacity:1}
+.banner{background:var(--card);color:var(--ink)}
+.banner .s{color:var(--sub);opacity:1}
+.banner .dd{color:var(--accent)}
+.meal-h .ico{display:none}
+.meal-h{margin-bottom:10px}
+.meal.now{outline:none;border-color:var(--ink)}
+.tile .ico{background:none;width:auto;height:auto;color:var(--ink)}
+.sec-title{font-size:18px;font-weight:800;color:var(--ink);padding:14px 4px 0;letter-spacing:-.02em}
+header.top .hello{font-size:26px}
+.dates button,.pdates button{box-shadow:none;border:1px solid var(--line)}
+.dates button[aria-pressed="true"],.pdates button[aria-pressed="true"]{border-color:var(--ink)}
+.pdates button .dot{background:var(--accent)}
+.seg button[aria-pressed="true"],.wk button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.periods .p.cur{background:var(--accent-soft)}
+.periods .p.cur .no{color:var(--accent)}
+table.tt th.today{color:var(--accent)}
+table.tt td.c.today{background:var(--accent-soft);color:var(--ink)}
+table.tt td.c.has{background:var(--accent);color:#fff}
+table.tt td.c.chg{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.mark.su{color:var(--accent)}
+.mark.due{color:var(--ink)}
+.mark.chg{color:var(--sub)}
+.tasks .dd{color:var(--accent)}
+.addrow{color:var(--ink)}
+.sheet input:focus,.sheet textarea:focus,.padd input:focus{box-shadow:0 0 0 2px var(--ink) inset}
+.sheet .item p.when{color:var(--ink)}
+.plans .pr.done .ck{background:var(--accent);border-color:var(--accent)}
+.plans .ptm{color:var(--accent)}
+.duelist .dr button{color:var(--ink);background:var(--bg)}
+nav.tabs a[aria-current="page"]{color:var(--ink)}
+
+/* ---- 테두리 없이, 과목·끼니별 색 ---- */
+.card,.hero,.banner{border:none}
+.dates button,.pdates button{border:none}
+.dates button[aria-pressed="true"],.pdates button[aria-pressed="true"]{background:var(--ink)}
+.meal.now{outline:none;border:none;box-shadow:0 0 0 2px var(--ink) inset}
+.meal-h .ico{display:inline-grid;width:auto;height:auto;background:none!important;place-items:center}
+.meal-h .ico svg{width:24px;height:24px}
+.meal-h{gap:8px}
+.m-breakfast .ico{color:#f29a1f} .m-breakfast .name{color:#c76d00}
+.m-lunch .ico{color:#2f9e5b} .m-lunch .name{color:#1f7a44}
+.m-dinner .ico{color:#5b5bd6} .m-dinner .name{color:#4343b0}
+.hero.meal{background:#fff6e9} .hero.tt{background:#eef5ff} .hero.plan{background:#fff0f0}
+.hero.meal .k{color:#c76d00} .hero.tt .k{color:#2f62c9} .hero.plan .k{color:#c9453b}
+.banner{background:#fff1e8}
+table.tt td.c.today{background:inherit}
+table.tt td.c.today{font-weight:800}
+table.tt td.c.s-math{background:#e7f0ff;color:#2752b8}
+table.tt td.c.s-sci{background:#e5f6ec;color:#1f7a44}
+table.tt td.c.s-eng{background:#f0e9ff;color:#5b3fb8}
+table.tt td.c.s-kor{background:#ffe9e6;color:#b8392b}
+table.tt td.c.s-soc{background:#fff4d6;color:#966400}
+table.tt td.c.s-info{background:#e3f6f8;color:#11788a}
+table.tt td.c.s-art{background:#fde8f3;color:#a8336f}
+table.tt td.c.s-etc{background:var(--bg);color:var(--sub)}
+table.tt td.c.has{background:var(--accent)!important;color:#fff!important}
+.sdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:8px;vertical-align:1px}
+.sdot.s-math{background:#3b6fe0}.sdot.s-sci{background:#2f9e5b}.sdot.s-eng{background:#7a5ae0}.sdot.s-kor{background:#e0503f}
+.sdot.s-soc{background:#e0a400}.sdot.s-info{background:#1aa3b8}.sdot.s-art{background:#d6488f}.sdot.s-etc{background:#b5b9c4}
 </style>
 </head>
 <body>
 
 <div class="wrap">
   <header class="top">
-    <div class="hello" id="hello">오늘 뭐 먹지?</div>
+    <div class="hello" id="hello">급식</div>
     <div class="sub num" id="subline">경기북과학고등학교</div>
   </header>
 
@@ -251,7 +326,7 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
     <div id="meals" class="view"></div>
     <a class="card tile" href="https://www.zudo.my/" target="_blank" rel="noopener">
       <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></span>
-      <div><b>ZUDO</b><span>기숙사 관리 시스템 열기</span></div>
+      <div><b>ZUDO</b><span>기숙사 관리 시스템</span></div>
       <span class="arr">›</span>
     </a>
     <p class="loadnote" id="loadNote" hidden></p>
@@ -362,7 +437,7 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
     const v = (location.hash || "#meal").slice(1), view = VIEWS.includes(v) ? v : "meal";
     VIEWS.forEach(k => $("v-"+k).hidden = k !== view);
     document.querySelectorAll("nav.tabs a").forEach(a => a.dataset.v === view ? a.setAttribute("aria-current","page") : a.removeAttribute("aria-current"));
-    $("hello").textContent = view === "meal" ? "오늘 뭐 먹지?" : view === "tt" ? "오늘 무슨 수업?" : "오늘 뭐 하지?";
+    $("hello").textContent = view === "meal" ? "급식" : view === "tt" ? "시간표" : "내 계획";
     if (view === "plan") queueMicrotask(() => renderPlanAll());
     window.scrollTo(0,0);
   }
@@ -388,10 +463,7 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
       body.append(el("div","big", mains.join(" · ")));
       const rest = meal.dishes.filter(d => !(meal.main||[]).includes(d) && !BASIC.test(d)).map(clean);
       if (rest.length) body.append(el("div","rest", rest.join(", ")));
-      const foot = el("div","foot");
-      if (meal.kcal) foot.append(el("span","pill num", `${Math.round(meal.kcal)} kcal`));
-      foot.append(el("span","pill", `${m.time}부터`));
-      body.append(foot);
+      body.append(el("div","rest num", `${m.time}부터${meal.kcal ? " · " + Math.round(meal.kcal) + " kcal" : ""}`));
     }
     hero.append(ico, body); box.append(hero);
   }
@@ -413,7 +485,7 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
       b.type = "button"; b.setAttribute("aria-pressed", String(d === state.sel));
       if (d < TODAY) b.classList.add("past");
       if (w === 1 && i === 0) b.classList.add("gap");
-      b.append(el("span","w", d === TODAY ? "오늘" : WD[wd(d)]), el("span","n num", String(+d.slice(6,8))));
+      b.append(el("span","n num", d === TODAY ? "오늘" : `${+d.slice(6,8)} ${WD[wd(d)]}`));
       b.onclick = () => { state.sel = d; renderDates(); renderMeals(); };
       s.append(b);
     }
@@ -432,10 +504,10 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
     const up = upcomingMeal();
     for (const m of has){
       const meal = mealOf(state.sel, m.k), main = new Set(meal.main || []);
-      const card = el("div","card meal" + (state.sel === up.day && MEALS[up.idx].k === m.k ? " now" : ""));
-      const h = el("div","meal-h"), ico = el("div","ico"); ico.style.background = m.g; ico.append(svg(ICON[m.ico]));
-      const nm = el("div"); nm.append(el("div","name",m.name), el("div","time",m.time));
-      h.append(ico, nm); if (meal.kcal) h.append(el("span","pill num",`${Math.round(meal.kcal)} kcal`));
+      const card = el("div","card meal m-" + m.k + (state.sel === up.day && MEALS[up.idx].k === m.k ? " now" : ""));
+      const h = el("div","meal-h"), ico = el("div","ico"); ico.append(svg(ICON[m.ico]));
+      const nm = el("div","name", `${m.name} ${m.time}`);
+      h.append(ico, nm); if (meal.kcal) h.append(el("span","kc num",`${Math.round(meal.kcal)} kcal`));
       const mains = el("div","mains"), sides = el("div","sides"), basics = [];
       for (const d of meal.dishes){
         if (main.has(d)) { const r = el("div","m"); r.append(el("span",null,clean(d))); mains.append(r); }
@@ -458,6 +530,17 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
     if (doc?.weekStart && date < doc.weekStart) return blankWeek;
     return weekOf(doc,"this");
   }
+  const subjClass = s => {
+    s = s || "";
+    if (/수학|심수|미적|기하|확률|대수/.test(s)) return "s-math";
+    if (/물리|화학|생명|지구|물질|역학|과학|연구|실험|과탐|생물|천문/.test(s)) return "s-sci";
+    if (/영어|영작|영문|English/i.test(s)) return "s-eng";
+    if (/국어|문학|독서|화법|작문|언어/.test(s)) return "s-kor";
+    if (/통사|사회|역사|한국사|윤리|지리|경제|정치/.test(s)) return "s-soc";
+    if (/정보|알고리즘|프로그래밍|코딩|인공지능/.test(s)) return "s-info";
+    if (/체육|스포츠|음악|미술|예술/.test(s)) return "s-art";
+    return "s-etc";
+  };
   const toMin = t => { const [h,m] = String(t).split(":").map(Number); return h*60 + (m||0); };
 
   function renderPicker(){
@@ -499,14 +582,12 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
       if (curIdx >= 0){ k = `${cls} · 지금 ${curIdx+1}교시`; big = list[curIdx]; rest = teach[curIdx] ? `${teach[curIdx]} 선생님` : "";
         const n = list.findIndex((s,i) => i > curIdx && s); if (n >= 0) rest += (rest ? " · " : "") + `다음 ${n+1}교시 ${list[n]}`; }
       else if (nextIdx >= 0){ k = `${cls} · ${day === TODAY ? "다음" : md(day)} ${nextIdx+1}교시`; big = list[nextIdx]; rest = `${times[nextIdx]} 시작` + (teach[nextIdx] ? ` · ${teach[nextIdx]} 선생님` : ""); }
-      else { k = `${cls} · 오늘 수업 끝`; big = "수고했어요"; rest = `오늘 ${last+1}교시까지 했어요`; }
+      else { k = `${cls} 오늘 수업`; big = "모두 끝났어요"; rest = `${last+1}교시까지 있었어요`; }
       body.append(el("div","k",k), el("div","big",big));
       if (rest) body.append(el("div","rest",rest));
-      const foot = el("div","foot");
-      foot.append(el("span","pill",`${WD[wd(day)]}요일 ${list.filter(Boolean).length}교시`));
+      const foot = { append(){} };
       const chg = (w.changed?.[wd(day)] || []).filter(Boolean).length;
-      if (chg) foot.append(el("span","pill",`변경 ${chg}개`));
-      body.append(foot);
+      if (chg) body.append(el("div","rest", `오늘 바뀐 수업 ${chg}개`));
     }
     hero.append(ico, body); box.append(hero);
   }
@@ -523,10 +604,12 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
       if (!s) return;
       const st = times[i] ? toMin(times[i]) : null;
       const row = el("div","p" + (st != null && now >= st && now < st + PERIOD_MIN ? " cur" : st != null && now >= st + PERIOD_MIN ? " done" : ""));
-      const no = el("div","no num", `${i+1}`); if (times[i]) no.append(el("small",null,times[i]));
-      const sj = el("div","s", s); if (chg[i]) sj.append(el("span","tag","변경"));
-      const nS = tasksAt(day, i+1).length; if (nS) sj.append(el("span","badge", nS > 1 ? `수행 ${nS}` : "수행"));
-      row.append(no, sj, el("div","tch", teach[i] || ""));
+      const no = el("div","no num", `${i+1}교시`);
+      const sj = el("div","s"); sj.append(el("span","sdot " + subjClass(s)), document.createTextNode(s));
+      const nS = tasksAt(day, i+1).length;
+      if (nS) sj.append(el("span","mark su", " · 수행평가"));
+      else if (chg[i]) sj.append(el("span","mark chg", " · 바뀐 수업"));
+      row.append(no, sj, el("div","tch num", times[i] || ""));
       row.onclick = () => openSheet(day, i+1, s, teach[i] || "");
       box.append(row);
     });
@@ -550,14 +633,13 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
     let rows = 7; for (let d=1; d<=5; d++) (days[d]||[]).forEach((s,i) => { if (s) rows = Math.max(rows, i+1); });
     const body = el("tbody");
     for (let p=0; p<rows; p++){
-      const tr = el("tr"), pc = el("td","pc num", String(p+1)); if (times[p]) pc.append(el("small",null,times[p])); tr.append(pc);
+      const tr = el("tr"), pc = el("td","pc num", String(p+1)); tr.append(pc);
       for (let d=1; d<=5; d++){
         const v = (days[d]||[])[p] || "";
         const date = wk.weekStart ? addDays(wk.weekStart, d-1) : null;
         const has = date ? tasksAt(date, p+1).length : 0;
-        const td = el("td","c" + (isThis && d === wd(TODAY) ? " today" : "") + (v ? "" : " blank") + ((chg[d]||[])[p] ? " chg" : "") + (has ? " has" : ""), v || "·");
-        if (has) td.append(el("span","hv", has > 1 ? `수행 ${has}` : "수행"));
-        else if (v && (teach[d]||[])[p]) td.append(el("span","tc",teach[d][p]));
+        const td = el("td","c " + (v ? subjClass(v) : "") + (isThis && d === wd(TODAY) ? " today" : "") + (v ? "" : " blank") + ((chg[d]||[])[p] ? " chg" : "") + (has ? " has" : ""), v || "·");
+
         if (date && v) td.onclick = () => openSheet(date, p+1, v, (teach[d]||[])[p] || "");
         tr.append(td);
       }
@@ -566,7 +648,7 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
     t.append(body);
     const upd = doc?.updated ? `${+doc.updated.slice(5,7)}월 ${+doc.updated.slice(8,10)}일 ${doc.updated.slice(11,16)}` : "";
     $("ttNote").textContent = !state.loaded.tt ? "불러오는 중" : !doc ? "아직 이 반 시간표가 없어요." :
-      `컴시간 알리미 기준${upd ? " · " + upd + " 업데이트" : ""}. 주황 테두리는 바뀐 수업이에요. 매일 아침 자동으로 새로 받아와요.`;
+      `컴시간 알리미 기준${upd ? " · " + upd + " 업데이트" : ""}. 주황 칸은 수행평가, 검은 테두리는 바뀐 수업이에요. 칸을 누르면 선생님과 수행평가를 볼 수 있어요.`;
   }
 
   // ---------- 수행평가(교시) · 과제(날짜+시간 마감) ----------
@@ -595,7 +677,7 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
     return isDue(t) ? `${md(t.date)} ${WD[wd(t.date)]} ${t.due_time || "23:59"}까지${t.subject ? " · " + t.subject : ""}`
                     : `${md(t.date)} ${WD[wd(t.date)]} · ${t.period}교시 ${t.subject || ""}`;
   }
-  function kindTag(t){ return el("span","ktag " + (isDue(t) ? "due" : "su"), isDue(t) ? "과제" : "수행"); }
+  function kindTag(t){ return el("span","mark " + (isDue(t) ? "due" : "su"), isDue(t) ? "과제 · " : "수행 · "); }
 
   function renderTasks(){
     const box = $("tasks"); box.textContent = "";
@@ -661,8 +743,8 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
     const f = el("form"); f.noValidate = true;
     let kind = k0;
     const kd = el("div","kind");
-    const kb1 = el("button"); kb1.type = "button"; kb1.append("수행평가", el("small",null,"이 수업 시간에 해요"));
-    const kb2 = el("button"); kb2.type = "button"; kb2.append("과제", el("small",null,"마감 날짜·시간까지"));
+    const kb1 = el("button"); kb1.type = "button"; kb1.append("수업 중 수행평가");
+    const kb2 = el("button"); kb2.type = "button"; kb2.append("마감 있는 과제");
     const dueRow = el("div","duerow");
     const dIn = el("input"); dIn.type = "date"; dIn.value = isoDate(date); dIn.setAttribute("aria-label","마감 날짜");
     const tIn = el("input"); tIn.type = "time"; tIn.value = time || "23:59"; tIn.setAttribute("aria-label","마감 시간");
@@ -739,13 +821,13 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
     ico.append(svg('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l2.5 2.5L16 9"/><rect x="3.5" y="3.5" width="17" height="17" rx="4"/></svg>'));
     const body = el("div");
     if (!list.length){ body.append(el("div","k","오늘 할 일"), el("div","big","아직 계획이 없어요"), el("div","rest","아래에서 오늘 할 일을 적어보세요")); }
-    else if (!left.length){ body.append(el("div","k",`오늘 할 일 ${list.length}개`), el("div","big","다 끝냈어요!")); }
+    else if (!left.length){ body.append(el("div","k",`오늘 할 일 ${list.length}개`), el("div","big","모두 했어요")); }
     else {
       const nx = left[0];
-      body.append(el("div","k",`오늘 할 일 ${left.length}개 남음`), el("div","big", nx.title));
+      body.append(el("div","k",`오늘 할 일 · ${left.length}개 남음`), el("div","big", nx.title));
       if (nx.time) body.append(el("div","rest", `${nx.time}에 하기로 했어요`));
     }
-    const foot = el("div","foot"); foot.append(el("span","pill num", `${list.filter(x => x.done).length} / ${list.length} 완료`)); if (list.length) body.append(foot);
+    if (list.length) body.append(el("div","rest num", `${list.filter(x => x.done).length}개 끝냄 · 전체 ${list.length}개`));
     hero.append(ico, body); box.append(hero);
   }
   function renderPlanDates(){
@@ -753,8 +835,8 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
     for (let i=0; i<14; i++){
       const d = addDays(TODAY, i), b = el("button"); b.type = "button";
       b.setAttribute("aria-pressed", String(d === state.planSel));
-      const w = el("span","w" + (wd(d) === 0 ? " sun" : wd(d) === 6 ? " sat" : ""), i === 0 ? "오늘" : i === 1 ? "내일" : WD[wd(d)]);
-      b.append(w, el("span","n num", String(+d.slice(6,8))));
+      const n = el("span","n num" + (wd(d) === 0 ? " sun" : wd(d) === 6 ? " sat" : ""), i === 0 ? "오늘" : i === 1 ? "내일" : `${+d.slice(6,8)} ${WD[wd(d)]}`);
+      b.append(n);
       if (plansOn(d).some(x => !x.done) || state.tasks.some(t => t.date === d)) b.append(el("span","dot"));
       b.onclick = () => { state.planSel = d; renderPlanAll(); };
       s2.append(b);
