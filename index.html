@@ -178,8 +178,11 @@ table.tt td.c .hv{display:block;font-size:10px;font-weight:800;color:var(--pink)
 .ktag{display:inline-block;font-size:11px;font-weight:800;border-radius:6px;padding:1px 6px;margin-right:6px;vertical-align:1px}
 .ktag.su{background:#fde8f3;color:#b02a74}
 .ktag.due{background:#e6efff;color:#2f5bd8}
-table.tt td.c.hasdue{background:#e6efff;color:#2f5bd8}
-table.tt td.c .hv.due{color:var(--blue)}
+.addrow{display:block;width:calc(100% - 8px);margin:4px 4px 6px;padding:11px 0;border-radius:14px;background:var(--bg);font-weight:800;font-size:14px;color:var(--blue)}
+.duerow{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.duerow label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:700;color:var(--sub)}
+.sheet .duerow input{padding:10px 12px;min-height:46px;-webkit-appearance:none;appearance:none}
+.sheet .item p.when{color:var(--blue);font-weight:700;font-size:13px;margin-top:4px}
 
 /* tiles */
 .tile{display:flex;align-items:center;gap:14px;padding:16px 18px;text-decoration:none;color:var(--ink)}
@@ -189,10 +192,43 @@ table.tt td.c .hv.due{color:var(--blue)}
 .tile span{display:block;font-size:13px;color:var(--faint)}
 .tile .arr{margin-left:auto;color:var(--faint)}
 
+/* 내 계획 */
+.hero.plan{background:linear-gradient(120deg,#f7b733 0%,#f08a2c 55%,#ec5f6b 100%);box-shadow:0 10px 24px rgba(240,138,44,.22)}
+.pdates{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 4px;scrollbar-width:none}
+.pdates::-webkit-scrollbar{display:none}
+.pdates button{flex:none;width:50px;padding:9px 0 8px;border-radius:16px;background:var(--card);box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;line-height:1.25;position:relative}
+.pdates .w{font-size:12px;color:var(--faint);font-weight:600}
+.pdates .n{font-size:18px;font-weight:800}
+.pdates .w.sun{color:#e5534b}
+.pdates .w.sat{color:var(--blue)}
+.pdates button .dot{position:absolute;bottom:4px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--orange)}
+.pdates button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.pdates button[aria-pressed="true"] .w{color:rgba(255,255,255,.7)}
+.plans{padding:6px 8px}
+.plans .pr{display:grid;grid-template-columns:34px 48px 1fr auto;gap:6px;align-items:center;padding:9px 8px;border-radius:14px}
+.plans .ck{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;color:#fff}
+.plans .pr.done .ck{background:var(--orange);border-color:var(--orange)}
+.plans .pr.done .pt{color:var(--faint);text-decoration:line-through}
+.plans .ptm{font-size:13px;font-weight:800;color:var(--orange)}
+.plans .ptm{white-space:nowrap}
+.plans .ptm.none{color:var(--faint);font-weight:600}
+.plans .pt{font-size:16px;font-weight:700;word-break:keep-all;line-height:1.35}
+.plans .px{color:var(--faint);font-size:18px;padding:0 6px}
+.plans .none{padding:14px 10px;color:var(--faint);font-size:14px}
+.duelist .dr{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:10px 12px}
+.duelist .dr .tt2{font-size:12px;color:var(--faint)}
+.duelist .dr .tt1{font-weight:700;font-size:15px}
+.duelist .dr button{font-size:13px;font-weight:800;color:var(--orange);background:#fff3e6;border-radius:10px;padding:7px 10px;white-space:nowrap}
+.padd{display:grid;grid-template-columns:96px 1fr auto;gap:8px;padding:12px}
+.padd input{border:0;border-radius:12px;background:var(--bg);padding:11px 10px;font-size:16px;outline:none;min-width:0;min-height:44px;-webkit-appearance:none;appearance:none}
+.padd input:focus{box-shadow:0 0 0 2px var(--orange) inset}
+.padd button{border-radius:12px;background:var(--ink);color:#fff;font-weight:800;padding:0 16px}
+.privacy{font-size:12px;color:var(--faint);text-align:center;margin:0}
+
 /* tab bar */
 body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:env(safe-area-inset-bottom,0px);background:rgba(255,255,255,.92);z-index:9}
 nav.tabs{position:fixed;left:0;right:0;bottom:env(safe-area-inset-bottom,0px);height:var(--tab-h);background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
-  border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr;z-index:10;
+  border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);z-index:10;
   padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
 nav.tabs a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;color:var(--faint);font-size:12px;font-weight:700}
 nav.tabs a svg{width:24px;height:24px}
@@ -221,6 +257,22 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
     <p class="loadnote" id="loadNote" hidden></p>
   </main>
 
+  <!-- 내 계획 -->
+  <main class="view" id="v-plan" hidden>
+    <div id="heroPlan"></div>
+    <div class="pdates" id="pdates"></div>
+    <div class="sec-title" id="planTitle">할 일</div>
+    <div class="card plans" id="plans"></div>
+    <form class="card padd" id="planForm">
+      <input id="planTime" type="time" aria-label="시간 (선택)">
+      <input id="planText" maxlength="80" placeholder="할 일 (예: 수학 문제집 3장)" autocomplete="off">
+      <button type="submit">추가</button>
+    </form>
+    <div class="sec-title" id="dueTitle">이 날 반 일정</div>
+    <div class="card duelist" id="duelist"></div>
+    <p class="privacy">내 계획은 이 기기에만 저장돼요. 다른 친구들에게는 보이지 않아요.</p>
+  </main>
+
   <!-- 시간표 -->
   <main class="view" id="v-tt" hidden>
     <div id="heroTT"></div>
@@ -240,6 +292,7 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
 <nav class="tabs" aria-label="메뉴">
   <a href="#meal" data-v="meal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13h16a8 8 0 0 1-16 0z"/><path d="M9 4c0 2 2 2 2 4M14 4c0 2 2 2 2 4"/></svg>급식</a>
   <a href="#tt" data-v="tt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="16" rx="3"/><path d="M3.5 9.5h17M8 3v3M16 3v3M8 14h3M8 17h6"/></svg>시간표</a>
+  <a href="#plan" data-v="plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l2.5 2.5L16 9"/><rect x="3.5" y="3.5" width="17" height="17" rx="4"/></svg>내 계획</a>
 </nav>
 <div class="sheet-bg" id="sheetBg" hidden><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
 
@@ -304,12 +357,13 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
   $("subline").textContent = `경기북과학고 · ${md(TODAY)} ${WD[wd(TODAY)]}요일`;
 
   // ---- tabs ----
-  const VIEWS = ["meal","tt"];
+  const VIEWS = ["meal","tt","plan"];
   function show(){
     const v = (location.hash || "#meal").slice(1), view = VIEWS.includes(v) ? v : "meal";
     VIEWS.forEach(k => $("v-"+k).hidden = k !== view);
     document.querySelectorAll("nav.tabs a").forEach(a => a.dataset.v === view ? a.setAttribute("aria-current","page") : a.removeAttribute("aria-current"));
-    $("hello").textContent = view === "meal" ? "오늘 뭐 먹지?" : "오늘 무슨 수업?";
+    $("hello").textContent = view === "meal" ? "오늘 뭐 먹지?" : view === "tt" ? "오늘 무슨 수업?" : "오늘 뭐 하지?";
+    if (view === "plan") queueMicrotask(() => renderPlanAll());
     window.scrollTo(0,0);
   }
   addEventListener("hashchange", show); show();
@@ -471,9 +525,7 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
       const row = el("div","p" + (st != null && now >= st && now < st + PERIOD_MIN ? " cur" : st != null && now >= st + PERIOD_MIN ? " done" : ""));
       const no = el("div","no num", `${i+1}`); if (times[i]) no.append(el("small",null,times[i]));
       const sj = el("div","s", s); if (chg[i]) sj.append(el("span","tag","변경"));
-      const here = tasksAt(day, i+1), nS = here.filter(t => t.kind !== "과제").length, nD = here.length - nS;
-      if (nS) sj.append(el("span","badge", nS > 1 ? `수행 ${nS}` : "수행"));
-      if (nD) { const b = el("span","badge", nD > 1 ? `과제 ${nD}` : "과제"); b.style.background = "var(--blue)"; sj.append(b); }
+      const nS = tasksAt(day, i+1).length; if (nS) sj.append(el("span","badge", nS > 1 ? `수행 ${nS}` : "수행"));
       row.append(no, sj, el("div","tch", teach[i] || ""));
       row.onclick = () => openSheet(day, i+1, s, teach[i] || "");
       box.append(row);
@@ -502,9 +554,9 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
       for (let d=1; d<=5; d++){
         const v = (days[d]||[])[p] || "";
         const date = wk.weekStart ? addDays(wk.weekStart, d-1) : null;
-        const here = date ? tasksAt(date, p+1) : [], hasS = here.filter(t => t.kind !== "과제").length, hasD = here.length - hasS, has = here.length;
-        const td = el("td","c" + (isThis && d === wd(TODAY) ? " today" : "") + (v ? "" : " blank") + ((chg[d]||[])[p] ? " chg" : "") + (hasS ? " has" : hasD ? " hasdue" : ""), v || "·");
-        if (has) td.append(el("span","hv" + (hasS ? "" : " due"), hasS && hasD ? "수행·과제" : hasS ? (hasS > 1 ? `수행 ${hasS}` : "수행") : (hasD > 1 ? `과제 ${hasD}` : "과제")));
+        const has = date ? tasksAt(date, p+1).length : 0;
+        const td = el("td","c" + (isThis && d === wd(TODAY) ? " today" : "") + (v ? "" : " blank") + ((chg[d]||[])[p] ? " chg" : "") + (has ? " has" : ""), v || "·");
+        if (has) td.append(el("span","hv", has > 1 ? `수행 ${has}` : "수행"));
         else if (v && (teach[d]||[])[p]) td.append(el("span","tc",teach[d][p]));
         if (date && v) td.onclick = () => openSheet(date, p+1, v, (teach[d]||[])[p] || "");
         tr.append(td);
@@ -517,35 +569,51 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
       `컴시간 알리미 기준${upd ? " · " + upd + " 업데이트" : ""}. 주황 테두리는 바뀐 수업이에요. 매일 아침 자동으로 새로 받아와요.`;
   }
 
-  // ---------- 수행평가 ----------
-  const tasksAt = (date, period) => state.tasks.filter(t => t.date === date && t.period === period);
+  // ---------- 수행평가(교시) · 과제(날짜+시간 마감) ----------
+  const isDue = t => t.kind === "과제";
+  const tasksAt = (date, period) => state.tasks.filter(t => !isDue(t) && t.date === date && t.period === period);
+  const duesOn = date => state.tasks.filter(t => isDue(t) && t.date === date);
   const isoDate = s => `${s.slice(0,4)}-${s.slice(4,6)}-${s.slice(6,8)}`;
+  const sortKey = t => t.date + (isDue(t) ? (t.due_time || "23:59") : (state.tts[state.myClass]?.times?.[t.period-1] || String(t.period).padStart(2,"0")));
+  const sortTasks = () => state.tasks.sort((a,b) => sortKey(a).localeCompare(sortKey(b)));
+  const duePassed = t => isDue(t) && t.date === TODAY && t.due_time && toMin(t.due_time) <= nowMin();
+
   async function loadTasks(){
     const cls = state.myClass; state.tasksFor = cls;
     if (!sbReady()){ state.tasks = []; renderTasks(); return; }
     try {
       const from = isoDate(addDays(monday, -7));
-      const rows = await sb(`/rest/v1/assessments?select=id,class,date,period,subject,title,note,kind,created_at&class=eq.${encodeURIComponent(cls)}&date=gte.${from}&order=date.asc,period.asc&limit=500`);
+      const rows = await sb(`/rest/v1/assessments?select=id,class,date,period,subject,title,note,kind,due_time,created_at&class=eq.${encodeURIComponent(cls)}&date=gte.${from}&order=date.asc&limit=500`);
       if (state.myClass !== cls) return;
       state.tasks = rows.map(r => ({ ...r, kind: r.kind || "수행", date: r.date.replaceAll("-","") }));
-    } catch { state.tasks = []; state.taskErr = true; }
-    renderTasks(); renderPeriods(); renderGrid();
+      sortTasks();
+    } catch { state.tasks = []; }
+    renderTasks(); renderPeriods(); renderGrid(); if (!$("v-plan").hidden) renderPlanAll();
   }
+
+  function taskWhen(t){
+    return isDue(t) ? `${md(t.date)} ${WD[wd(t.date)]} ${t.due_time || "23:59"}까지${t.subject ? " · " + t.subject : ""}`
+                    : `${md(t.date)} ${WD[wd(t.date)]} · ${t.period}교시 ${t.subject || ""}`;
+  }
+  function kindTag(t){ return el("span","ktag " + (isDue(t) ? "due" : "su"), isDue(t) ? "과제" : "수행"); }
+
   function renderTasks(){
     const box = $("tasks"); box.textContent = "";
-    if (!sbReady()) return box.append(el("div","none","수행평가 저장소가 아직 연결되지 않았어요."));
-    const up = state.tasks.filter(t => t.date >= TODAY).slice(0, 8);
-    if (!up.length) return box.append(el("div","none","등록된 수행평가·과제가 없어요. 시간표에서 교시를 눌러 추가해보세요."));
+    if (!sbReady()) return box.append(el("div","none","저장소가 아직 연결되지 않았어요."));
+    const addRow = el("button","addrow","+ 과제 추가"); addRow.type = "button";
+    addRow.onclick = () => openDue(isWeekend(addDays(TODAY,1)) ? monday : addDays(TODAY,1));
+    const up = state.tasks.filter(t => t.date >= TODAY && !duePassed(t)).slice(0, 10);
+    if (!up.length) box.append(el("div","none","등록된 수행평가·과제가 없어요. 교시를 누르거나 아래 버튼으로 추가해보세요."));
     up.forEach(t => {
       const n = dday(t.date), row = el("div","row");
       row.append(el("div","dd num" + (n > 7 ? " far" : ""), n === 0 ? "오늘" : `D-${n}`));
-      const due = t.kind === "과제";
-      const t1 = el("div","tt1"); t1.append(el("span","ktag " + (due ? "due" : "su"), due ? "과제" : "수행"), document.createTextNode(t.title));
-      const mid = el("div"); mid.append(t1, el("div","tt2", due ? `${md(t.date)} ${WD[wd(t.date)]} ${t.period}교시 ${t.subject || ""} 전까지` : `${md(t.date)} ${WD[wd(t.date)]} · ${t.period}교시 ${t.subject || ""}`));
+      const t1 = el("div","tt1"); t1.append(kindTag(t), document.createTextNode(t.title));
+      const mid = el("div"); mid.append(t1, el("div","tt2", taskWhen(t)));
       row.append(mid, el("span","arr","›"));
-      row.onclick = () => openSheet(t.date, t.period, t.subject, "");
+      row.onclick = () => isDue(t) ? openDue(t.date) : openSheet(t.date, t.period, t.subject, "");
       box.append(row);
     });
+    box.append(addRow);
   }
 
   let sheetCtx = null;
@@ -553,18 +621,11 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
   $("sheetBg").addEventListener("click", e => { if (e.target.id === "sheetBg") closeSheet(); });
   document.addEventListener("keydown", e => { if (e.key === "Escape" && sheetCtx) closeSheet(); });
 
-  function openSheet(date, period, subject, teacher){
-    sheetCtx = { date, period, subject };
-    const sh = $("sheet"); sh.textContent = "";
-    sh.append(el("div","grab"));
-    sh.append(el("div","sh-k", `${md(date)} ${WD[wd(date)]}요일 · ${period}교시 · ${state.myClass.replace("-","학년 ")}반`));
-    sh.append(el("div","sh-t", subject + (teacher ? ` (${teacher})` : "")));
-    const list = el("div"); sh.append(list);
-    const items = tasksAt(date, period);
-    if (!items.length) list.append(el("p","empty","이 수업에 등록된 수행평가나 과제가 없어요."));
+  function itemList(sh, items, reopen){
     items.forEach(t => {
-      const it = el("div","item"), tb = el("b"), due = t.kind === "과제";
-      tb.append(el("span","ktag " + (due ? "due" : "su"), due ? "과제 · 이 수업 전까지" : "수행평가"), document.createTextNode(t.title)); it.append(tb);
+      const it = el("div","item"), tb = el("b");
+      tb.append(kindTag(t), document.createTextNode(t.title)); it.append(tb);
+      if (isDue(t)) it.append(el("p","when", taskWhen(t)));
       if (t.note) it.append(el("p",null,t.note));
       const meta = el("div","meta"); meta.append(el("span",null, "올린 날 " + new Date(t.created_at).toLocaleDateString("ko-KR",{month:"numeric",day:"numeric"})));
       if (mine.has(t.id)){
@@ -574,52 +635,174 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
           del.disabled = true;
           try { await sb("/rest/v1/rpc/delete_assessment", { method:"POST", body: JSON.stringify({ p_id: t.id, p_token: myToken }) });
             mine.delete(t.id); store.set("shMine", [...mine]); state.tasks = state.tasks.filter(x => x.id !== t.id);
-            renderTasks(); renderPeriods(); renderGrid(); openSheet(date, period, subject, teacher);
+            renderTasks(); renderPeriods(); renderGrid(); reopen();
           } catch { del.textContent = "삭제하지 못했어요"; }
         };
         meta.append(del);
       }
-      it.append(meta); list.append(it);
+      it.append(meta); sh.append(it);
     });
-    if (!sbReady()){ sh.append(el("p","empty","수행평가 저장소가 아직 연결되지 않아서 추가할 수 없어요.")); }
+  }
+
+  async function saveTask(row, msg, btn, reopen){
+    btn.disabled = true; msg.textContent = "저장 중…";
+    const id = uuid();
+    try {
+      await sb("/rest/v1/assessments", { method:"POST", headers:{ Prefer:"return=minimal" },
+        body: JSON.stringify({ id, class: state.myClass, token: myToken, ...row, date: isoDate(row.date) }) });
+      mine.add(id); store.set("shMine", [...mine]);
+      state.tasks.push({ id, class: state.myClass, ...row, created_at: new Date().toISOString() }); sortTasks();
+      renderTasks(); renderPeriods(); renderGrid(); reopen(row);
+    } catch { msg.textContent = "저장하지 못했어요. 잠시 후 다시 해주세요."; btn.disabled = false; }
+  }
+
+  // 날짜·시간 입력칸 + 제목·메모 폼
+  function buildForm(sh, { kindToggle, kind: k0, date, time, subject, period, teacher }){
+    const f = el("form"); f.noValidate = true;
+    let kind = k0;
+    const kd = el("div","kind");
+    const kb1 = el("button"); kb1.type = "button"; kb1.append("수행평가", el("small",null,"이 수업 시간에 해요"));
+    const kb2 = el("button"); kb2.type = "button"; kb2.append("과제", el("small",null,"마감 날짜·시간까지"));
+    const dueRow = el("div","duerow");
+    const dIn = el("input"); dIn.type = "date"; dIn.value = isoDate(date); dIn.setAttribute("aria-label","마감 날짜");
+    const tIn = el("input"); tIn.type = "time"; tIn.value = time || "23:59"; tIn.setAttribute("aria-label","마감 시간");
+    const dl = el("label"); dl.append(el("span",null,"마감 날짜"), dIn);
+    const tl = el("label"); tl.append(el("span",null,"마감 시간"), tIn);
+    dueRow.append(dl, tl);
+    const sIn = el("input"); sIn.maxLength = 30; sIn.placeholder = "과목 (선택)"; sIn.value = subject || ""; sIn.autocomplete = "off";
+    const ti = el("input"); ti.maxLength = 60; ti.autocomplete = "off";
+    const no = el("textarea"); no.rows = 2; no.maxLength = 300; no.placeholder = "메모 (준비물, 범위, 제출 방법 등 · 선택)";
+    const msg = el("div","msg");
+    const btns = el("div","btns"), cancel = el("button","btn ghost","닫기"), add = el("button","btn","추가");
+    cancel.type = "button"; cancel.onclick = closeSheet; add.type = "submit"; btns.append(cancel, add);
+    const setKind = k => {
+      kind = k; kb1.setAttribute("aria-pressed", String(k === "수행")); kb2.setAttribute("aria-pressed", String(k === "과제"));
+      dueRow.hidden = k !== "과제"; sIn.hidden = k !== "과제" || !!kindToggle;
+      ti.placeholder = k === "수행" ? "수행평가 이름 (예: 실험 보고서 작성)" : "과제 이름 (예: 탐구 보고서 제출)";
+    };
+    kb1.onclick = () => setKind("수행"); kb2.onclick = () => setKind("과제"); kd.append(kb1, kb2);
+    if (kindToggle) f.append(kd);
+    f.append(dueRow, sIn, ti, no, msg, btns); sh.append(f); setKind(kind);
+    f.addEventListener("submit", e => {
+      e.preventDefault();
+      const title = ti.value.trim(), note = no.value.trim();
+      if (!title){ msg.textContent = (kind === "과제" ? "과제" : "수행평가") + " 이름을 적어주세요."; ti.focus(); return; }
+      if (kind === "과제"){
+        const dv = (dIn.value || "").replaceAll("-",""), tv = tIn.value || "23:59";
+        if (dv.length !== 8){ msg.textContent = "마감 날짜를 골라주세요."; return; }
+        saveTask({ kind:"과제", date: dv, due_time: tv.slice(0,5), period: null, subject: (kindToggle ? subject : sIn.value.trim()) || "", title, note }, msg, add,
+          r => openDue(r.date));
+      } else {
+        saveTask({ kind:"수행", date, period, subject, title, note, due_time: null }, msg, add, () => openSheet(date, period, subject, teacher));
+      }
+    });
+  }
+
+  function openSheet(date, period, subject, teacher){
+    sheetCtx = { date, period };
+    const sh = $("sheet"); sh.textContent = "";
+    sh.append(el("div","grab"), el("div","sh-k", `${md(date)} ${WD[wd(date)]}요일 · ${period}교시 · ${state.myClass.replace("-","학년 ")}반`),
+      el("div","sh-t", subject + (teacher ? ` (${teacher})` : "")));
+    const items = tasksAt(date, period);
+    if (!items.length) sh.append(el("p","empty","이 수업에 등록된 수행평가가 없어요."));
+    itemList(sh, items, () => openSheet(date, period, subject, teacher));
+    if (!sbReady()) sh.append(el("p","empty","저장소가 아직 연결되지 않아서 추가할 수 없어요."));
     else {
-      const f = el("form"); f.noValidate = true;
-      let kind = "수행";
-      const kd = el("div","kind");
-      const kb1 = el("button"); kb1.type = "button"; kb1.append("수행평가", el("small",null,"이 수업 시간에 해요"));
-      const kb2 = el("button"); kb2.type = "button"; kb2.append("과제", el("small",null,"이 수업 전까지 해와요"));
-      const ti = el("input"); ti.id = "tkTitle"; ti.maxLength = 60; ti.autocomplete = "off";
-      const setKind = k => { kind = k; kb1.setAttribute("aria-pressed", String(k === "수행")); kb2.setAttribute("aria-pressed", String(k === "과제"));
-        ti.placeholder = k === "수행" ? "수행평가 이름 (예: 실험 보고서 작성)" : "과제 이름 (예: 탐구 보고서 제출)"; };
-      kb1.onclick = () => setKind("수행"); kb2.onclick = () => setKind("과제"); kd.append(kb1, kb2); setKind("수행");
-      const no = el("textarea"); no.id = "tkNote"; no.rows = 2; no.maxLength = 300; no.placeholder = "메모 (준비물, 범위 등 · 선택)";
-      const msg = el("div","msg");
-      const btns = el("div","btns"), cancel = el("button","btn ghost","닫기"), add = el("button","btn","추가");
-      cancel.type = "button"; cancel.onclick = closeSheet; add.type = "submit";
-      btns.append(cancel, add); f.append(kd, ti, no, msg, btns); sh.append(f);
-      f.addEventListener("submit", async e => {
-        e.preventDefault();
-        const title = ti.value.trim(), note = no.value.trim();
-        if (!title){ msg.textContent = (kind === "과제" ? "과제" : "수행평가") + " 이름을 적어주세요."; ti.focus(); return; }
-        add.disabled = true; msg.textContent = "저장 중…";
-        const id = uuid();
-        try {
-          await sb("/rest/v1/assessments", { method:"POST", headers:{ Prefer:"return=minimal" },
-            body: JSON.stringify({ id, class: state.myClass, date: isoDate(date), period, subject, title, note, kind, token: myToken }) });
-          mine.add(id); store.set("shMine", [...mine]);
-          state.tasks.push({ id, class: state.myClass, date, period, subject, title, note, kind, created_at: new Date().toISOString() });
-          state.tasks.sort((a,b) => (a.date+a.period).localeCompare(b.date+b.period));
-          renderTasks(); renderPeriods(); renderGrid(); openSheet(date, period, subject, teacher);
-        } catch { msg.textContent = "저장하지 못했어요. 잠시 후 다시 해주세요."; add.disabled = false; }
-      });
+      const times = state.tts[state.myClass]?.times || [];
+      buildForm(sh, { kindToggle: true, kind: "수행", date, time: times[period-1] || "23:59", subject, period, teacher });
     }
     $("sheetBg").hidden = false; document.body.style.overflow = "hidden";
   }
 
+  function openDue(date){
+    sheetCtx = { date };
+    const sh = $("sheet"); sh.textContent = "";
+    sh.append(el("div","grab"), el("div","sh-k", `${state.myClass.replace("-","학년 ")}반`), el("div","sh-t", `${md(date)} ${WD[wd(date)]}요일 마감 과제`));
+    const items = duesOn(date);
+    if (!items.length) sh.append(el("p","empty","이 날 마감인 과제가 없어요."));
+    itemList(sh, items, () => openDue(date));
+    if (!sbReady()) sh.append(el("p","empty","저장소가 아직 연결되지 않아서 추가할 수 없어요."));
+    else buildForm(sh, { kindToggle: false, kind: "과제", date, time: "23:59", subject: "" });
+    $("sheetBg").hidden = false; document.body.style.overflow = "hidden";
+  }
+
+  // ---------- 내 계획 (이 기기에만 저장) ----------
+  let plans = store.get("shPlans", []);
+  const savePlans = () => store.set("shPlans", plans);
+  state.planSel = TODAY;
+  const plansOn = d => plans.filter(x => x.date === d).sort((a,b) => (a.time || "99:99").localeCompare(b.time || "99:99") || a.at - b.at);
+
+  function renderHeroPlan(){
+    const box = $("heroPlan"); box.textContent = "";
+    const list = plansOn(TODAY), left = list.filter(x => !x.done);
+    const hero = el("div","hero plan"), ico = el("div","ico");
+    ico.append(svg('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l2.5 2.5L16 9"/><rect x="3.5" y="3.5" width="17" height="17" rx="4"/></svg>'));
+    const body = el("div");
+    if (!list.length){ body.append(el("div","k","오늘 할 일"), el("div","big","아직 계획이 없어요"), el("div","rest","아래에서 오늘 할 일을 적어보세요")); }
+    else if (!left.length){ body.append(el("div","k",`오늘 할 일 ${list.length}개`), el("div","big","다 끝냈어요!")); }
+    else {
+      const nx = left[0];
+      body.append(el("div","k",`오늘 할 일 ${left.length}개 남음`), el("div","big", nx.title));
+      if (nx.time) body.append(el("div","rest", `${nx.time}에 하기로 했어요`));
+    }
+    const foot = el("div","foot"); foot.append(el("span","pill num", `${list.filter(x => x.done).length} / ${list.length} 완료`)); if (list.length) body.append(foot);
+    hero.append(ico, body); box.append(hero);
+  }
+  function renderPlanDates(){
+    const s2 = $("pdates"); s2.textContent = "";
+    for (let i=0; i<14; i++){
+      const d = addDays(TODAY, i), b = el("button"); b.type = "button";
+      b.setAttribute("aria-pressed", String(d === state.planSel));
+      const w = el("span","w" + (wd(d) === 0 ? " sun" : wd(d) === 6 ? " sat" : ""), i === 0 ? "오늘" : i === 1 ? "내일" : WD[wd(d)]);
+      b.append(w, el("span","n num", String(+d.slice(6,8))));
+      if (plansOn(d).some(x => !x.done) || state.tasks.some(t => t.date === d)) b.append(el("span","dot"));
+      b.onclick = () => { state.planSel = d; renderPlanAll(); };
+      s2.append(b);
+    }
+  }
+  function renderPlans(){
+    const d = state.planSel, box = $("plans"); box.textContent = "";
+    $("planTitle").textContent = `${d === TODAY ? "오늘" : d === addDays(TODAY,1) ? "내일" : md(d) + " " + WD[wd(d)] + "요일"} 할 일`;
+    const list = plansOn(d);
+    if (!list.length) box.append(el("div","none","아직 계획이 없어요. 아래 칸에 적고 추가를 누르세요."));
+    list.forEach(x => {
+      const r = el("div","pr" + (x.done ? " done" : ""));
+      const ck = el("button","ck"); ck.type = "button"; ck.setAttribute("aria-label", x.done ? "완료 취소" : "완료");
+      if (x.done) ck.append(svg('<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'));
+      ck.onclick = () => { x.done = !x.done; savePlans(); renderPlanAll(); };
+      const del = el("button","px","×"); del.type = "button"; del.setAttribute("aria-label","삭제");
+      let armed = false;
+      del.onclick = () => { if (!armed){ armed = true; del.textContent = "삭제?"; setTimeout(() => { armed = false; del.textContent = "×"; }, 2500); return; }
+        plans = plans.filter(y => y.id !== x.id); savePlans(); renderPlanAll(); };
+      r.append(ck, el("div","ptm num" + (x.time ? "" : " none"), x.time || "—"), el("div","pt", x.title), del);
+      box.append(r);
+    });
+  }
+  function renderDueList(){
+    const d = state.planSel, box = $("duelist"); box.textContent = "";
+    const list = state.tasks.filter(t => t.date === d);
+    $("dueTitle").textContent = `${state.myClass.replace("-","학년 ")}반 수행평가·과제 (${d === TODAY ? "오늘" : md(d)})`;
+    if (!list.length){ box.append(el("div","dr")); box.lastChild.append(el("div","tt2","이 날 마감인 수행평가·과제가 없어요.")); return; }
+    list.forEach(t => {
+      const r = el("div","dr"), left = el("div"), t1 = el("div","tt1");
+      t1.append(kindTag(t), document.createTextNode(t.title)); left.append(t1, el("div","tt2", taskWhen(t)));
+      const b = el("button",null,"+ 계획"); b.type = "button";
+      b.onclick = () => { $("planText").value = `${t.title} 준비`; $("planText").focus(); };
+      r.append(left, b); box.append(r);
+    });
+  }
+  function renderPlanAll(){ renderHeroPlan(); renderPlanDates(); renderPlans(); renderDueList(); }
+  $("planForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const title = $("planText").value.trim(); if (!title){ $("planText").focus(); return; }
+    plans.push({ id: uuid(), date: state.planSel, time: ($("planTime").value || "").slice(0,5), title, done: false, at: Date.now() });
+    savePlans(); $("planText").value = ""; $("planTime").value = ""; renderPlanAll();
+  });
+
   function renderMealAll(){ renderHeroMeal(); renderBanner(); renderDates(); renderMeals(); }
   function renderTTAll(){ renderHeroTT(); renderPicker(); renderTasks(); renderPeriods(); renderWeeks(); renderGrid(); if (state.tasksFor !== state.myClass) loadTasks(); }
   renderMealAll(); renderTTAll();
-  setInterval(() => { renderHeroMeal(); renderHeroTT(); renderPeriods(); }, 60000);
+  setInterval(() => { renderHeroMeal(); renderHeroTT(); renderPeriods(); if (!$("v-plan").hidden) renderHeroPlan(); }, 60000);
 
   // ---- data (data.json, refreshed every morning by GitHub Actions) ----
   async function load(){
