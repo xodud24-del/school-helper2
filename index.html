@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="북과 도우미">
-<meta name="theme-color" content="#f4f5f8">
+<meta name="theme-color" content="#ffffff">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" href="icon-180.png">
 <link rel="manifest" href="manifest.json">
@@ -308,6 +308,92 @@ table.tt td.c.has{background:var(--accent)!important;color:#fff!important}
 .sdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:8px;vertical-align:1px}
 .sdot.s-math{background:#3b6fe0}.sdot.s-sci{background:#2f9e5b}.sdot.s-eng{background:#7a5ae0}.sdot.s-kor{background:#e0503f}
 .sdot.s-soc{background:#e0a400}.sdot.s-info{background:#1aa3b8}.sdot.s-art{background:#d6488f}.sdot.s-etc{background:#b5b9c4}
+
+/* ---- 브랜드 컬러: 북과 딥 틸 한 계열 ----
+   50 #eaf5f6 · 100 #d2ebed · 200 #a9d8dc · 300 #75bfc5 · 500 #2a8f99 · 600 #12707a · 700 #0f5c64 · 800 #0a4046 */
+:root{ --b50:#eaf5f6; --b100:#d2ebed; --b200:#a9d8dc; --b300:#75bfc5; --b500:#2a8f99; --b600:#12707a; --b700:#0f5c64; --b800:#0a4046;
+  --accent:var(--b600); --accent-soft:var(--b50); --marker:var(--b200); }
+.hero.meal,.hero.tt,.hero.plan,.banner{background:var(--b50)}
+.hero.meal .k,.hero.tt .k,.hero.plan .k{color:var(--b700)}
+.banner .dd{color:var(--b600)}
+.m-breakfast .ico,.m-lunch .ico,.m-dinner .ico{color:var(--b500)}
+.m-breakfast .name,.m-lunch .name,.m-dinner .name{color:var(--b800)}
+.meal.now{box-shadow:0 0 0 2px var(--b500) inset}
+.dates button[aria-pressed="true"],.pdates button[aria-pressed="true"],
+.seg button[aria-pressed="true"],.wk button[aria-pressed="true"]{background:var(--b700);color:#fff}
+.pdates .n.sun,.pdates .n.sat{color:var(--b600)}
+.pdates button .dot{background:var(--b500)}
+table.tt th.today{color:var(--b600)}
+table.tt td.c.s-math,table.tt td.c.s-sci{background:var(--b100);color:var(--b800)}
+table.tt td.c.s-eng,table.tt td.c.s-kor,table.tt td.c.s-info{background:var(--b50);color:var(--b700)}
+table.tt td.c.s-soc,table.tt td.c.s-art,table.tt td.c.s-etc{background:var(--bg);color:var(--sub)}
+table.tt td.c.today{box-shadow:inset 0 -3px 0 var(--b300)}
+table.tt td.c.chg{box-shadow:inset 0 0 0 1.5px var(--b700)}
+table.tt td.c.has{background:var(--b600)!important;color:#fff!important}
+.sdot.s-math,.sdot.s-sci{background:var(--b600)}
+.sdot.s-eng,.sdot.s-kor,.sdot.s-info{background:var(--b300)}
+.sdot.s-soc,.sdot.s-art,.sdot.s-etc{background:#c4c8cf}
+.periods .p.cur{background:var(--b50)} .periods .p.cur .no{color:var(--b600)}
+.mark.su,.tasks .dd,.plans .ptm{color:var(--b600)}
+.mark.chg{color:var(--b700)}
+.plans .pr.done .ck{background:var(--b500);border-color:var(--b500)}
+.addrow,.duelist .dr button{color:var(--b700);background:var(--b50)}
+.kind button[aria-pressed="true"]{color:var(--b800)}
+.sheet .btn{background:var(--b700)}
+.padd button{background:var(--b700)}
+.sheet input:focus,.sheet textarea:focus,.padd input:focus{box-shadow:0 0 0 2px var(--b500) inset}
+nav.tabs a[aria-current="page"]{color:var(--b700)}
+.tile .ico{color:var(--b600)}
+header.top .hello{color:var(--b800)}
+
+/* ---- 블록·강조색 빼기: 흰 바탕 한 장, 초록은 글자에만 ---- */
+:root{ --bg:#ffffff; }
+body{background:#fff}
+.card,.hero,.hero.meal,.hero.tt,.hero.plan,.banner{background:transparent!important;border:none;border-radius:0;box-shadow:none}
+.hero{padding:4px 2px 0}
+.banner{padding:0 2px}
+.meal{padding:0 2px}
+.view{gap:30px}
+#meals.view{gap:34px}
+.mains .m span{background:none;padding:0}
+.mains .m{font-size:19px}
+.sides{gap:0;margin-top:8px;color:var(--ink)}
+.sides span{background:none;padding:0;border-radius:0;font-size:15px}
+.sides span:not(:last-child)::after{content:", "}
+.basics{margin-top:6px}
+.meal.now{box-shadow:none}
+.meal.now .name::after{content:" · 다음 식사";color:var(--sub);font-weight:600}
+.dates,.pdates{gap:18px;padding:0 2px}
+.dates button,.pdates button{background:none!important;min-width:0;padding:6px 0;border-radius:0;color:var(--faint)}
+.dates button .n,.pdates button .n{color:var(--faint);font-weight:700}
+.dates button.past .n{color:#c9ccd2}
+.dates button[aria-pressed="true"] .n,.pdates button[aria-pressed="true"] .n{color:var(--b700)!important;font-weight:800;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:2px}
+.pdates button .dot{bottom:-4px}
+.seg{padding:0 2px;gap:12px}
+.seg .opts{display:flex;gap:18px}
+.seg button,.wk button{background:none!important;padding:2px 0;color:var(--faint);box-shadow:none!important}
+.seg button[aria-pressed="true"],.wk button[aria-pressed="true"]{color:var(--b700)!important;font-weight:800;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:2px}
+.wk{background:none;gap:14px;padding:0}
+.weekhead{padding:0 2px 8px}
+.grid-wrap{padding:0}
+.note{padding:6px 2px 0}
+.periods,.tasks,.plans{padding:0}
+.periods .p,.tasks .row,.plans .pr,.duelist .dr{padding-left:2px;padding-right:2px;border-radius:0}
+.periods .p.cur{background:none}
+.periods .p.cur .s,.periods .p.cur .no{color:var(--b700)}
+.addrow{background:none!important;text-align:left;width:auto;margin:6px 2px;padding:6px 0;color:var(--b700)}
+.duelist .dr button{background:none!important;padding:4px 0}
+table.tt td.c,table.tt td.c.s-math,table.tt td.c.s-sci,table.tt td.c.s-eng,table.tt td.c.s-kor,table.tt td.c.s-info,table.tt td.c.s-soc,table.tt td.c.s-art,table.tt td.c.s-etc{background:#f4f5f6;color:var(--ink)}
+table.tt td.c.today{box-shadow:none;color:var(--b700)}
+table.tt td.c.has{background:#f4f5f6!important;color:var(--b700)!important;text-decoration:underline;text-underline-offset:4px}
+table.tt td.c.chg{box-shadow:none;font-style:italic}
+.sdot{display:none}
+.padd{padding:0 2px}
+.padd input{background:#f4f5f6}
+.tile{padding:4px 2px}
+.loadnote{text-align:left}
+.hero.meal,.hero.tt,.hero.plan{padding:0 2px}
+.sides span:not(:last-child){margin-right:5px}
 </style>
 </head>
 <body>
@@ -648,7 +734,7 @@ table.tt td.c.has{background:var(--accent)!important;color:#fff!important}
     t.append(body);
     const upd = doc?.updated ? `${+doc.updated.slice(5,7)}월 ${+doc.updated.slice(8,10)}일 ${doc.updated.slice(11,16)}` : "";
     $("ttNote").textContent = !state.loaded.tt ? "불러오는 중" : !doc ? "아직 이 반 시간표가 없어요." :
-      `컴시간 알리미 기준${upd ? " · " + upd + " 업데이트" : ""}. 주황 칸은 수행평가, 검은 테두리는 바뀐 수업이에요. 칸을 누르면 선생님과 수행평가를 볼 수 있어요.`;
+      `컴시간 알리미 기준${upd ? " · " + upd + " 업데이트" : ""}. 초록 밑줄은 수행평가, 기울어진 글씨는 바뀐 수업이에요. 칸을 누르면 선생님과 수행평가를 볼 수 있어요.`;
   }
 
   // ---------- 수행평가(교시) · 과제(날짜+시간 마감) ----------

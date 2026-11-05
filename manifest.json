@@ -3,8 +3,8 @@
  "short_name": "북과 도우미",
  "start_url": "./",
  "display": "standalone",
- "background_color": "#f4f5f8",
- "theme_color": "#f4f5f8",
+ "background_color": "#ffffff",
+ "theme_color": "#12707a",
  "icons": [
   {
    "src": "icon-180.png",
