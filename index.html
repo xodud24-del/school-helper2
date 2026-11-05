@@ -138,6 +138,40 @@ table.tt td.c input{width:100%;border:0;border-bottom:2px solid var(--blue);back
 .note{font-size:12px;color:var(--faint);padding:0 18px 16px;margin:0;line-height:1.6}
 .loadnote{font-size:13px;color:var(--sub);text-align:center}
 
+/* 수행평가 */
+.badge{display:inline-block;font-size:10px;font-weight:800;border-radius:6px;padding:1px 5px;background:var(--pink);color:#fff;margin-left:4px;vertical-align:2px}
+table.tt td.c.has{background:#fde8f3;color:#b02a74}
+table.tt td.c .hv{display:block;font-size:10px;font-weight:800;color:var(--pink);margin-top:2px}
+.periods .p{cursor:pointer}
+.tasks{padding:6px 8px}
+.tasks .row{display:grid;grid-template-columns:54px 1fr auto;gap:10px;align-items:center;padding:11px 12px;border-radius:16px;cursor:pointer}
+.tasks .dd{font-weight:800;font-size:15px;color:var(--pink)}
+.tasks .dd.far{color:var(--sub)}
+.tasks .tt1{font-weight:700;font-size:15px;line-height:1.35;word-break:keep-all}
+.tasks .tt2{font-size:12px;color:var(--faint)}
+.tasks .arr{color:var(--faint)}
+.tasks .none{padding:14px 12px;color:var(--faint);font-size:14px}
+.sheet-bg{position:fixed;inset:0;background:rgba(15,18,30,.38);z-index:50;display:flex;align-items:flex-end;justify-content:center}
+.sheet{width:100%;max-width:560px;max-height:86vh;overflow-y:auto;background:var(--card);border-radius:26px 26px 0 0;
+  padding:10px max(20px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));box-shadow:0 -10px 40px rgba(0,0,0,.18)}
+.sheet .grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 14px}
+.sheet .sh-k{font-size:13px;font-weight:700;color:var(--sub)}
+.sheet .sh-t{font-size:22px;font-weight:800;letter-spacing:-.03em;margin:2px 0 14px}
+.sheet .item{background:var(--bg);border-radius:16px;padding:12px 14px;margin-bottom:8px}
+.sheet .item b{display:block;font-size:16px;word-break:keep-all}
+.sheet .item p{margin:4px 0 0;font-size:14px;color:var(--sub);white-space:pre-wrap;word-break:break-word}
+.sheet .item .meta{display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:12px;color:var(--faint)}
+.sheet .item .del{color:var(--pink);font-weight:700;font-size:12px}
+.sheet .empty{color:var(--faint);font-size:14px;margin:0 0 12px}
+.sheet form{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.sheet input,.sheet textarea{width:100%;border:0;border-radius:14px;background:var(--bg);padding:12px 14px;font:inherit;font-size:16px;outline:none;resize:none}
+.sheet input:focus,.sheet textarea:focus{box-shadow:0 0 0 2px var(--blue) inset}
+.sheet .btns{display:flex;gap:8px;margin-top:4px}
+.sheet .btn{flex:1;border-radius:14px;padding:13px 0;font-weight:800;font-size:16px;background:var(--ink);color:#fff}
+.sheet .btn.ghost{background:var(--bg);color:var(--ink)}
+.sheet .btn:disabled{opacity:.5}
+.sheet .msg{font-size:13px;color:var(--sub);min-height:18px}
+
 /* tiles */
 .tile{display:flex;align-items:center;gap:14px;padding:16px 18px;text-decoration:none;color:var(--ink)}
 .tile .ico{width:44px;height:44px;border-radius:14px;background:var(--chip);display:grid;place-items:center;color:var(--violet);flex:none}
@@ -182,6 +216,8 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
   <main class="view" id="v-tt" hidden>
     <div id="heroTT"></div>
     <div class="card seg" id="picker"></div>
+    <div class="sec-title">다가오는 수행평가</div>
+    <div class="card tasks" id="tasks"></div>
     <div class="sec-title" id="todayTitle">오늘</div>
     <div class="card periods" id="periods"></div>
     <div class="card">
@@ -196,6 +232,7 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
   <a href="#meal" data-v="meal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13h16a8 8 0 0 1-16 0z"/><path d="M9 4c0 2 2 2 2 4M14 4c0 2 2 2 2 4"/></svg>급식</a>
   <a href="#tt" data-v="tt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="16" rx="3"/><path d="M3.5 9.5h17M8 3v3M16 3v3M8 14h3M8 17h6"/></svg>시간표</a>
 </nav>
+<div class="sheet-bg" id="sheetBg" hidden><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
 
 <script>
 (() => {
@@ -216,7 +253,22 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
   const WD = ["일","월","화","수","목","금","토"];
   const GRADES = [1,2,3], CLASSES = [1,2,3,4,5];
   const PERIOD_MIN = 50;
-  const state = { meals:[], events:[], tts:{}, loaded:{meals:false,events:false,tt:false}, myClass:"1-2", ttWeek:"this", sel:null };
+  const state = { meals:[], events:[], tts:{}, loaded:{meals:false,events:false,tt:false}, myClass:"1-2", ttWeek:"this", sel:null, tasks:[], tasksFor:null };
+
+  // ---- 수행평가 저장소 (Supabase) ----
+  const SB_URL = "https://ppgfqdcwwlbqatgikgdr.supabase.co";
+  const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBwZ2ZxZGN3d2xicWF0Z2lrZ2RyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM4NzYxMjEsImV4cCI6MjEwOTQ1MjEyMX0.Tkm04HW4O6bykr1OngfYNjzMI6RjaHXcpet9k1SLAKQ";   // anon 키 (공개용)
+  const sbReady = () => !!(SB_URL && SB_KEY);
+  async function sb(path, opts = {}){
+    const r = await fetch(SB_URL + path, { ...opts, headers: { apikey: SB_KEY, "Content-Type": "application/json", ...(opts.headers || {}) } });
+    if (!r.ok) throw new Error(await r.text());
+    const t = await r.text(); return t ? JSON.parse(t) : null;
+  }
+  const store = { get(k, d){ try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } }, set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch {} } };
+  let myToken = store.get("shToken", null);
+  if (!myToken){ myToken = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2) + Date.now()); store.set("shToken", myToken); }
+  const mine = new Set(store.get("shMine", []));
+  const uuid = () => crypto.randomUUID ? crypto.randomUUID() : "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c => (c ^ Math.random() * 16 >> c / 4).toString(16));
   try { state.myClass = localStorage.getItem("myClass") || "1-2"; } catch {}
 
   // ---- time (KST) ----
@@ -410,7 +462,9 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
       const row = el("div","p" + (st != null && now >= st && now < st + PERIOD_MIN ? " cur" : st != null && now >= st + PERIOD_MIN ? " done" : ""));
       const no = el("div","no num", `${i+1}`); if (times[i]) no.append(el("small",null,times[i]));
       const sj = el("div","s", s); if (chg[i]) sj.append(el("span","tag","변경"));
+      const n = tasksAt(day, i+1).length; if (n) sj.append(el("span","badge", n > 1 ? `수행 ${n}` : "수행"));
       row.append(no, sj, el("div","tch", teach[i] || ""));
+      row.onclick = () => openSheet(day, i+1, s, teach[i] || "");
       box.append(row);
     });
   }
@@ -436,8 +490,12 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
       const tr = el("tr"), pc = el("td","pc num", String(p+1)); if (times[p]) pc.append(el("small",null,times[p])); tr.append(pc);
       for (let d=1; d<=5; d++){
         const v = (days[d]||[])[p] || "";
-        const td = el("td","c" + (isThis && d === wd(TODAY) ? " today" : "") + (v ? "" : " blank") + ((chg[d]||[])[p] ? " chg" : ""), v || "·");
-        if (v && (teach[d]||[])[p]) td.append(el("span","tc",teach[d][p]));
+        const date = wk.weekStart ? addDays(wk.weekStart, d-1) : null;
+        const has = date ? tasksAt(date, p+1).length : 0;
+        const td = el("td","c" + (isThis && d === wd(TODAY) ? " today" : "") + (v ? "" : " blank") + ((chg[d]||[])[p] ? " chg" : "") + (has ? " has" : ""), v || "·");
+        if (has) td.append(el("span","hv", has > 1 ? `수행 ${has}` : "수행"));
+        else if (v && (teach[d]||[])[p]) td.append(el("span","tc",teach[d][p]));
+        if (date && v) td.onclick = () => openSheet(date, p+1, v, (teach[d]||[])[p] || "");
         tr.append(td);
       }
       body.append(tr);
@@ -448,8 +506,97 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
       `컴시간 알리미 기준${upd ? " · " + upd + " 업데이트" : ""}. 주황 테두리는 바뀐 수업이에요. 매일 아침 자동으로 새로 받아와요.`;
   }
 
+  // ---------- 수행평가 ----------
+  const tasksAt = (date, period) => state.tasks.filter(t => t.date === date && t.period === period);
+  const isoDate = s => `${s.slice(0,4)}-${s.slice(4,6)}-${s.slice(6,8)}`;
+  async function loadTasks(){
+    const cls = state.myClass; state.tasksFor = cls;
+    if (!sbReady()){ state.tasks = []; renderTasks(); return; }
+    try {
+      const from = isoDate(addDays(monday, -7));
+      const rows = await sb(`/rest/v1/assessments?select=id,class,date,period,subject,title,note,created_at&class=eq.${encodeURIComponent(cls)}&date=gte.${from}&order=date.asc,period.asc&limit=500`);
+      if (state.myClass !== cls) return;
+      state.tasks = rows.map(r => ({ ...r, date: r.date.replaceAll("-","") }));
+    } catch { state.tasks = []; state.taskErr = true; }
+    renderTasks(); renderPeriods(); renderGrid();
+  }
+  function renderTasks(){
+    const box = $("tasks"); box.textContent = "";
+    if (!sbReady()) return box.append(el("div","none","수행평가 저장소가 아직 연결되지 않았어요."));
+    const up = state.tasks.filter(t => t.date >= TODAY).slice(0, 8);
+    if (!up.length) return box.append(el("div","none","등록된 수행평가가 없어요. 시간표에서 교시를 눌러 추가해보세요."));
+    up.forEach(t => {
+      const n = dday(t.date), row = el("div","row");
+      row.append(el("div","dd num" + (n > 7 ? " far" : ""), n === 0 ? "오늘" : `D-${n}`));
+      const mid = el("div"); mid.append(el("div","tt1", t.title), el("div","tt2", `${md(t.date)} ${WD[wd(t.date)]} · ${t.period}교시 ${t.subject || ""}`));
+      row.append(mid, el("span","arr","›"));
+      row.onclick = () => openSheet(t.date, t.period, t.subject, "");
+      box.append(row);
+    });
+  }
+
+  let sheetCtx = null;
+  function closeSheet(){ $("sheetBg").hidden = true; sheetCtx = null; document.body.style.overflow = ""; }
+  $("sheetBg").addEventListener("click", e => { if (e.target.id === "sheetBg") closeSheet(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && sheetCtx) closeSheet(); });
+
+  function openSheet(date, period, subject, teacher){
+    sheetCtx = { date, period, subject };
+    const sh = $("sheet"); sh.textContent = "";
+    sh.append(el("div","grab"));
+    sh.append(el("div","sh-k", `${md(date)} ${WD[wd(date)]}요일 · ${period}교시 · ${state.myClass.replace("-","학년 ")}반`));
+    sh.append(el("div","sh-t", subject + (teacher ? ` (${teacher})` : "")));
+    const list = el("div"); sh.append(list);
+    const items = tasksAt(date, period);
+    if (!items.length) list.append(el("p","empty","이 수업에 등록된 수행평가가 없어요."));
+    items.forEach(t => {
+      const it = el("div","item"); it.append(el("b",null,t.title));
+      if (t.note) it.append(el("p",null,t.note));
+      const meta = el("div","meta"); meta.append(el("span",null, "올린 날 " + new Date(t.created_at).toLocaleDateString("ko-KR",{month:"numeric",day:"numeric"})));
+      if (mine.has(t.id)){
+        const del = el("button","del","삭제"); del.type = "button"; let armed = false;
+        del.onclick = async () => {
+          if (!armed){ armed = true; del.textContent = "한 번 더 누르면 삭제"; setTimeout(() => { armed = false; del.textContent = "삭제"; }, 3000); return; }
+          del.disabled = true;
+          try { await sb("/rest/v1/rpc/delete_assessment", { method:"POST", body: JSON.stringify({ p_id: t.id, p_token: myToken }) });
+            mine.delete(t.id); store.set("shMine", [...mine]); state.tasks = state.tasks.filter(x => x.id !== t.id);
+            renderTasks(); renderPeriods(); renderGrid(); openSheet(date, period, subject, teacher);
+          } catch { del.textContent = "삭제하지 못했어요"; }
+        };
+        meta.append(del);
+      }
+      it.append(meta); list.append(it);
+    });
+    if (!sbReady()){ sh.append(el("p","empty","수행평가 저장소가 아직 연결되지 않아서 추가할 수 없어요.")); }
+    else {
+      const f = el("form"); f.noValidate = true;
+      const ti = el("input"); ti.id = "tkTitle"; ti.maxLength = 60; ti.placeholder = "수행평가 이름 (예: 탐구 보고서 제출)"; ti.autocomplete = "off";
+      const no = el("textarea"); no.id = "tkNote"; no.rows = 2; no.maxLength = 300; no.placeholder = "메모 (준비물, 범위 등 · 선택)";
+      const msg = el("div","msg");
+      const btns = el("div","btns"), cancel = el("button","btn ghost","닫기"), add = el("button","btn","추가");
+      cancel.type = "button"; cancel.onclick = closeSheet; add.type = "submit";
+      btns.append(cancel, add); f.append(ti, no, msg, btns); sh.append(f);
+      f.addEventListener("submit", async e => {
+        e.preventDefault();
+        const title = ti.value.trim(), note = no.value.trim();
+        if (!title){ msg.textContent = "수행평가 이름을 적어주세요."; ti.focus(); return; }
+        add.disabled = true; msg.textContent = "저장 중…";
+        const id = uuid();
+        try {
+          await sb("/rest/v1/assessments", { method:"POST", headers:{ Prefer:"return=minimal" },
+            body: JSON.stringify({ id, class: state.myClass, date: isoDate(date), period, subject, title, note, token: myToken }) });
+          mine.add(id); store.set("shMine", [...mine]);
+          state.tasks.push({ id, class: state.myClass, date, period, subject, title, note, created_at: new Date().toISOString() });
+          state.tasks.sort((a,b) => (a.date+a.period).localeCompare(b.date+b.period));
+          renderTasks(); renderPeriods(); renderGrid(); openSheet(date, period, subject, teacher);
+        } catch { msg.textContent = "저장하지 못했어요. 잠시 후 다시 해주세요."; add.disabled = false; }
+      });
+    }
+    $("sheetBg").hidden = false; document.body.style.overflow = "hidden";
+  }
+
   function renderMealAll(){ renderHeroMeal(); renderBanner(); renderDates(); renderMeals(); }
-  function renderTTAll(){ renderHeroTT(); renderPicker(); renderPeriods(); renderWeeks(); renderGrid(); }
+  function renderTTAll(){ renderHeroTT(); renderPicker(); renderTasks(); renderPeriods(); renderWeeks(); renderGrid(); if (state.tasksFor !== state.myClass) loadTasks(); }
   renderMealAll(); renderTTAll();
   setInterval(() => { renderHeroMeal(); renderHeroTT(); renderPeriods(); }, 60000);
 
@@ -472,7 +619,7 @@ nav.tabs a[aria-current="page"]{color:var(--ink)}
     }
   }
   load();
-  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") load(); });
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible"){ load(); loadTasks(); } });
 })();
 </script>
 
